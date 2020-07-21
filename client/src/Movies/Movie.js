@@ -25,17 +25,22 @@ const Movie = (props) => {
     const saveMovie = evt => {
         if (!movie) return
         let newSaved = [...saved]
+        let removed = false
         newSaved.forEach((v,i) => {
-            if (v.id === id){
+            if (v.id == id){
+                console.log(i)
                 console.log(newSaved)
                 newSaved.splice(i,1)
                 console.log(newSaved)
                 setSaved(newSaved)
+                removed = true
                 return
             }
         })
-        newSaved.push(movie)
+        if (!removed){
+            newSaved.push(movie)
         setSaved(newSaved)
+        }
     }
 
   if (!movie) {
