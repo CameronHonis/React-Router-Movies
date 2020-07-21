@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom'
 import axios from 'axios';
 
 const Movie = (props) => {
+    const { saved, setSaved } = props
   const [movie, setMovie] = useState();
- 
+  const { id } = useParams()
   useEffect(() => {
-    const id = 1;
     // change ^^^ that line and grab the id from the URL
     // You will NEED to add a dependency array to this effect hook
 
@@ -17,12 +18,25 @@ const Movie = (props) => {
         .catch(error => {
           console.error(error);
         });
-
+  // eslint-disable-next-line
   },[]);
   
   // Uncomment this only when you have moved on to the stretch goals
-  // const saveMovie = evt => {
-  // }
+    const saveMovie = evt => {
+        if (!movie) return
+        let newSaved = [...saved]
+        newSaved.forEach((v,i) => {
+            if (v.id === id){
+                console.log(newSaved)
+                newSaved.splice(i,1)
+                console.log(newSaved)
+                setSaved(newSaved)
+                return
+            }
+        })
+        newSaved.push(movie)
+        setSaved(newSaved)
+    }
 
   if (!movie) {
     return <div>Loading movie information...</div>;
@@ -47,7 +61,7 @@ const Movie = (props) => {
           </div>
         ))}
       </div>
-      <div className="save-button">Save</div>
+      <button className="save-button" onClick={saveMovie}>Save</button>
     </div>
   );
 }
